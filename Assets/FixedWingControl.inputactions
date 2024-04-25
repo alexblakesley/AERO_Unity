@@ -1,0 +1,160 @@
+{
+    "name": "FixedWingControl",
+    "maps": [
+        {
+            "name": "FixedWingControl",
+            "id": "c95dc705-af52-435f-b125-5d86356bf3c3",
+            "actions": [
+                {
+                    "name": "Throttle",
+                    "type": "Button",
+                    "id": "ce2a9f41-bb57-4061-a505-f7104d578f66",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Elevator",
+                    "type": "Button",
+                    "id": "c9bf916f-b628-4b2b-98d6-2764d61546cf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rudder",
+                    "type": "Button",
+                    "id": "736dab5f-1b45-438b-bbfc-2f89c67a5fb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aileron",
+                    "type": "Button",
+                    "id": "42fba0ee-0a2d-4193-b9a5-3bd856662953",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bdebcfcf-6e74-4655-a1ae-de7ae0a9c808",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throttle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Up/Down",
+                    "id": "b8d04dd4-f28c-4c1e-b872-acab5c1a8d7c",
+                    "path": "1DAxis(minValue=-0.00785,maxValue=0.00785)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Elevator",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "fd7f4b41-677b-437f-8742-2d0dd84b4330",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Elevator",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "bbd8c8ee-f05f-44ab-93f4-f67a303bf96e",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Elevator",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "aa6f5951-59c4-49b6-8ba3-534921344201",
+                    "path": "1DAxis(minValue=-0.000872,maxValue=0.000872)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rudder",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "10fb80e7-d585-4066-bf54-cf1277696893",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rudder",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "57f97952-a61c-40c9-9a69-4b1aa5b7c05b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rudder",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Left/Right",
+                    "id": "49e3b23f-66b6-4484-b217-70a722cf2f5e",
+                    "path": "1DAxis(minValue=-0.000872,maxValue=0.000872)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aileron",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "5fc6e907-adbc-4e37-b3d7-a97075aae54e",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aileron",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "0eafc0e4-ff66-4460-a115-c3b6ea6eb097",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aileron",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
