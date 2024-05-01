@@ -393,12 +393,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originAuthority: 1
-  _latitude: 37.42176777691571
-  _longitude: -122.05344399837462
-  _height: -7.022037144493811
-  _ecefX: -2691591.7386908364
-  _ecefY: -4298519.933121964
-  _ecefZ: 3854667.7722433237
+  _latitude: 40.702228398178086
+  _longitude: -74.01998994427652
+  _height: 109.53070654357795
+  _ecefX: 1333095.681282311
+  _ecefY: -4655186.3210252505
+  _ecefZ: 4137481.7492816225
   _scale: 1
 --- !u!4 &906444437
 Transform:
@@ -408,7 +408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906444435}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.5343523, z: 0, w: 0.8452619}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -417,7 +417,7 @@ Transform:
   - {fileID: 1427100505}
   - {fileID: 710124135}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -64.6, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1427100504
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +598,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 1388710418429386911, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1388710418429386913, guid: a79713e7fc4f9b8449eb3c535aeca820,
         type: 3}
