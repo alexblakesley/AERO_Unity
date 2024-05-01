@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class FixedWingController : MonoBehaviour
 {
     [SerializeField]
-    private readonly InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA;
+    public InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA;
     public GameObject go;
     public GameObject Camera;
 

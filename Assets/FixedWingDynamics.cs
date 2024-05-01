@@ -74,22 +74,22 @@ public class FixedWingDynamics
 
     public double[] GetDerivatives()
     {
-        double dx = Math.Cos(Theta) * Math.Cos(Psi) * U + 
+        double dX = Math.Cos(Theta) * Math.Cos(Psi) * U + 
             (Math.Sin(Phi) * Math.Sin(Theta) * Math.Cos(Psi) - Math.Cos(Phi) * Math.Sin(Psi)) * V + 
             (Math.Cos(Phi) * Math.Sin(Theta) * Math.Cos(Psi) + Math.Sin(Phi) * Math.Sin(Psi)) * W;
 
-        double dy = Math.Cos(Theta) * Math.Sin(Psi) * U +
+        double dY = Math.Cos(Theta) * Math.Sin(Psi) * U +
             (Math.Sin(Phi) * Math.Sin(Theta) * Math.Sin(Psi) + Math.Cos(Phi) * Math.Cos(Psi)) * V + 
             (Math.Cos(Phi) * Math.Sin(Theta) * Math.Sin(Psi) - Math.Sin(Phi) * Math.Cos(Psi)) * W;
 
-        double dz = -Math.Sin(Theta) * U + 
+        double dZ = -Math.Sin(Theta) * U + 
             Math.Sin(Phi) * Math.Cos(Theta) * V + 
             Math.Cos(Phi) * Math.Cos(Theta) * W;
 
             
         double dPhi = P + Math.Sin(Phi) * Math.Tan(Theta) * Q + Math.Cos(Phi) * Math.Tan(Theta) * R;
         double dTheta = Math.Cos(Phi) * Q - Math.Sin(Phi) * R;
-        double dpsi = Math.Sin(Phi) * (1 / Math.Cos(Theta)) * Q + Math.Cos(Phi) * (1 / Math.Cos(Theta)) * R;
+        double dPsi = Math.Sin(Phi) * (1 / Math.Cos(Theta)) * Q + Math.Cos(Phi) * (1 / Math.Cos(Theta)) * R;
 
         // FORCES
         //  forces = (FG_x, FA_x, FT_x, FG_y, FA_y, FT_y, FG_z, FA_z, FT_z)
@@ -108,9 +108,9 @@ public class FixedWingDynamics
         double Fy = FG_y + FA_y + FT_y;
         double Fz = FG_z + FA_z + FT_z;
         
-        double du = R * V - Q * W + Fx / m;
-        double dv = P * W - R * U + Fy / m;
-        double dw = Q * U - P * V + Fz / m;
+        double dU = R * V - Q * W + Fx / m;
+        double dV = P * W - R * U + Fy / m;
+        double dW = Q * U - P * V + Fz / m;
         
         // Moments
         // moments = (
@@ -135,17 +135,17 @@ public class FixedWingDynamics
         double C7 = ((Ix - Iy) * Ix + Math.Pow(Ixy, 2)) / C;
         double C8 = Ix / C;
         
-        double dp = C1 * P * Q - C2 * Q * R + C3 * L + C4 * N;
-        double dq = C5 * P * R - C6 * (Math.Pow(P, 2) - Math.Pow(R, 2)) + M / Iy;
-        double dr = C7 * P * Q - C1 * Q * R + C4 * L + C8 * N;
+        double dP = C1 * P * Q - C2 * Q * R + C3 * L + C4 * N;
+        double dQ = C5 * P * R - C6 * (Math.Pow(P, 2) - Math.Pow(R, 2)) + M / Iy;
+        double dR = C7 * P * Q - C1 * Q * R + C4 * L + C8 * N;
         
-        // double dp = ( -(Iz - Iy) * q * r + L ) / Ix;
-        // double dq = ( -(Ix - Iz) * r * p + M ) / Iy;
-        // double dr = ( -(Iy - Ix) * p * q + N ) / Iz;
+        // double dP = ( -(Iz - Iy) * q * r + L ) / Ix;
+        // double dQ = ( -(Ix - Iz) * r * p + M ) / Iy;
+        // double dR = ( -(Iy - Ix) * p * q + N ) / Iz;
         Debug.Log("L: "+L);
-        Debug.Log("dp: "+dp);
+        Debug.Log("dP: "+dP);
 
-        double[] ret = {dx, dy, dz, du, dv, dw, dPhi, dTheta, dpsi, dp, dq, dr};
+        double[] ret = {dX, dY, dZ, dU, dV, dW, dPhi, dTheta, dPsi, dP, dQ, dR};
 
         return ret;
     }
@@ -470,20 +470,20 @@ public class FixedWingDynamics
 
     private double interp1( double[] a, double[] b, double a_new )
     {   
-        List<double> dx = new List<double>();
-        List<double> dy = new List<double>();
-        List<double> slope = new List<double>();
-        List<double> intercept = new List<double>();
+        List<double> dX = new();
+        List<double> dY = new();
+        List<double> slope = new();
+        List<double> intercept = new();
 
         for( int i = 0; i < a.Length; ++i ){
             if( i < a.Length-1 ) {
-                dx.Add( a[i+1] - a[i] );
-                dy.Add( b[i+1] - b[i] );
-                slope.Add( dy[i] / dx[i] );
+                dX.Add( a[i+1] - a[i] );
+                dY.Add( b[i+1] - b[i] );
+                slope.Add( dY[i] / dX[i] );
                 intercept.Add( b[i] - a[i] * slope[i] );
             } else {
-                dx.Add( dx[i-1] );
-                dy.Add( dy[i-1] );
+                dX.Add( dX[i-1] );
+                dY.Add( dY[i-1] );
                 slope.Add( slope[i-1] );
                 intercept.Add( intercept[i-1] );
             }
@@ -496,7 +496,7 @@ public class FixedWingDynamics
 
     int findNearestNeighbourIndex( double value, double[] a )
     {
-        double dist = Double.MaxValue;
+        double dist = double.MaxValue;
         int idx = -1;
 
         for ( int i = 0; i < a.Length; ++i ) {
