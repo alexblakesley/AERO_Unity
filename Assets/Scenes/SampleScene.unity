@@ -168,7 +168,7 @@ MonoBehaviour:
   eulerAngles: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   angularVelocity: {x: 0, y: 0, z: 0}
-  UeMinMax: 0.1
+  UeMinMax: 0.2
   UaMinMax: 0.0872
   UrMinMax: 0.0872
 --- !u!4 &311320481

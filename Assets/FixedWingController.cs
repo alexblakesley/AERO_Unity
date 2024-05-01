@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FixedWingController : MonoBehaviour
@@ -45,9 +42,9 @@ public class FixedWingController : MonoBehaviour
     private void Start()
     {
         // Setup initial condition
-        Ut = 33.9f;
+        Ut = 0;
         Ua = 0f;
-        Ue = -0.05f;
+        Ue = 0.2f;
         Ur = 0f;
 
         position = new Vector3(0, 0, 0);
@@ -63,9 +60,7 @@ public class FixedWingController : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
-        Debug.Log("~~~~~~~~~~~~newIter~~~~~~~~~~~");
-        
+    {        
         float newUe = Ue + elevatorIA.action.ReadValue<float>();
         Ue = Mathf.Clamp(newUe, -UeMinMax, UeMinMax);
         
@@ -88,7 +83,7 @@ public class FixedWingController : MonoBehaviour
         float q =       angularVelocity.y * Mathf.Deg2Rad;
         float r =       angularVelocity.z * Mathf.Deg2Rad;
                 
-        FixedWingDynamics dynamics = new FixedWingDynamics(x, y, z, u, v, w, phi, theta, psi, p, q, r, Ua, Ue, Ur, Ut);
+        FixedWingDynamics_AP dynamics = new(x, y, z, u, v, w, phi, theta, psi, p, q, r, Ua, Ue, Ur, Ut);
 
         // derivatives = {dx, dy, dz, du, dv, dw, dphi, dtheta, dpsi, dp, dq, dr}
         double[] derivatives = dynamics.GetDerivatives();
@@ -106,24 +101,24 @@ public class FixedWingController : MonoBehaviour
         float dr =      (float) derivatives[11] * Time.fixedDeltaTime * Mathf.Rad2Deg;
         
         position += new Vector3(dx, dy, dz);
-        go.transform.position = new Vector3(position.x, -position.z, position.y);
+        go.transform.position = new Vector3(position.x, position.z, position.y);
         
         velocity += new Vector3(du, dv, dw);
 
         eulerAngles += new Vector3(dphi, dtheta, dpsi);
-        rotation.eulerAngles = new Vector3(-eulerAngles.x, eulerAngles.z, eulerAngles.y);
+        rotation.eulerAngles = new Vector3(eulerAngles.x, eulerAngles.z, -eulerAngles.y);
         go.transform.rotation = rotation;
         
         angularVelocity += new Vector3(dp, dq, dr);
 
         // Update Camera Pos
-        Camera.transform.position = new Vector3(x + dx - 0.5f, -z - dz + 1f, y + dy - 0.75f);
+        Camera.transform.position = new Vector3(x + dx - 0.5f, z + dz + 1f, y + dy - 0.75f);
     }
 
     // Actions
     private void ThrottlePressed(InputAction.CallbackContext e)
     {
-        Ut = 50f;
+        Ut = 0.05f;
     }
     private void ThrottleReleased(InputAction.CallbackContext e)
     {

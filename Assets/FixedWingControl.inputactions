@@ -68,7 +68,7 @@
                 {
                     "name": "negative",
                     "id": "fd7f4b41-677b-437f-8742-2d0dd84b4330",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -79,7 +79,7 @@
                 {
                     "name": "positive",
                     "id": "bbd8c8ee-f05f-44ab-93f4-f67a303bf96e",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -123,7 +123,7 @@
                 {
                     "name": "Left/Right",
                     "id": "49e3b23f-66b6-4484-b217-70a722cf2f5e",
-                    "path": "1DAxis(minValue=-0.00872,maxValue=0.00872)",
+                    "path": "1DAxis(minValue=-0.0872,maxValue=0.0872)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
