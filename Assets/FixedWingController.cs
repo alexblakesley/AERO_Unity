@@ -7,9 +7,9 @@ using UnityEngine.InputSystem;
 public class FixedWingController : MonoBehaviour
 {
     [SerializeField]
-    private InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA;
+    private readonly InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA;
     public GameObject go;
-    public GameObject camera;
+    public GameObject Camera;
 
     [ReadOnly]
     public float Ut;
@@ -117,7 +117,7 @@ public class FixedWingController : MonoBehaviour
         angularVelocity += new Vector3(dp, dq, dr);
 
         // Update Camera Pos
-        camera.transform.position = new Vector3(x + dx - 0.5f, -z - dz + 1f, y + dy - 0.75f);
+        Camera.transform.position = new Vector3(x + dx - 0.5f, -z - dz + 1f, y + dy - 0.75f);
     }
 
     // Actions

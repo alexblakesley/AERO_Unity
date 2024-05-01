@@ -53,5 +53,17 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "Drone Modelling.sln"
+    "dotnet.defaultSolution": "Drone Modelling.sln",
+    "cSpell.words": [
+        "dphi",
+        "dpsi",
+        "dtheta",
+        "interp",
+        "Mathf",
+        "rollrate",
+        "Ubar",
+        "Vbar",
+        "Wbar",
+        "yawrate"
+    ]
 }

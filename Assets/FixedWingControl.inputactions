@@ -123,7 +123,7 @@
                 {
                     "name": "Left/Right",
                     "id": "49e3b23f-66b6-4484-b217-70a722cf2f5e",
-                    "path": "1DAxis(minValue=-0.000872,maxValue=0.000872)",
+                    "path": "1DAxis(minValue=-0.00872,maxValue=0.00872)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

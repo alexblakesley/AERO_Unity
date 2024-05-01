@@ -158,7 +158,7 @@ MonoBehaviour:
   elevatorIA: {fileID: 659973094316306051, guid: 14d0fcaa259b38b4d886768d9899ab4c, type: 3}
   rudderIA: {fileID: 1247854556276124455, guid: 14d0fcaa259b38b4d886768d9899ab4c, type: 3}
   go: {fileID: 311320479}
-  camera: {fileID: 963194225}
+  Camera: {fileID: 963194225}
   Ut: 33.9
   Ua: 0
   Ue: 0

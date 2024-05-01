@@ -7,18 +7,18 @@ using UnityEngine.InputSystem;
 
 public class FixedWingDynamics
 {
-    public double x { get; set; }
-    public double y { get; set; }
-    public double z { get; set; }
-    public double u { get; set; }
-    public double v { get; set; }
-    public double w { get; set; }
-    public double phi { get; set; }
-    public double theta { get; set; }
-    public double psi { get; set; }
-    public double p { get; set; }
-    public double q { get; set; }
-    public double r { get; set; }
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+    public double U { get; set; }
+    public double V { get; set; }
+    public double W { get; set; }
+    public double Phi { get; set; }
+    public double Theta { get; set; }
+    public double Psi { get; set; }
+    public double P { get; set; }
+    public double Q { get; set; }
+    public double R { get; set; }
     public double Ua { get; set; }
     public double Ue { get; set; }
     public double Ur { get; set; }
@@ -45,7 +45,7 @@ public class FixedWingDynamics
     public double Vw = 0;
     public double Ww = 0;
 
-    private double UrFactor = 0.0000000000000001f;
+    private readonly double UrFactor = 0.0000000000000001f;
 
     public FixedWingDynamics(
         double _x, double _y, double _z,
@@ -54,18 +54,18 @@ public class FixedWingDynamics
         double _p, double _q, double _r,
         double _Ua, double _Ue, double _Ur, double _Ut
     ){
-        x = _x;
-        y = _y;
-        z = _z;
-        u = _u;
-        v = _v;
-        w = _w;
-        phi = _phi;
-        theta = _theta;
-        psi = _psi;
-        p = _p;
-        q = _q;
-        r = _r;
+        X = _x;
+        Y = _y;
+        Z = _z;
+        U = _u;
+        V = _v;
+        W = _w;
+        Phi = _phi;
+        Theta = _theta;
+        Psi = _psi;
+        P = _p;
+        Q = _q;
+        R = _r;
         Ua = _Ua;
         Ue = _Ue;
         Ur = _Ur;
@@ -74,22 +74,22 @@ public class FixedWingDynamics
 
     public double[] GetDerivatives()
     {
-        double dx = Math.Cos(theta) * Math.Cos(psi) * u + 
-            (Math.Sin(phi) * Math.Sin(theta) * Math.Cos(psi) - Math.Cos(phi) * Math.Sin(psi)) * v + 
-            (Math.Cos(phi) * Math.Sin(theta) * Math.Cos(psi) + Math.Sin(phi) * Math.Sin(psi)) * w;
+        double dx = Math.Cos(Theta) * Math.Cos(Psi) * U + 
+            (Math.Sin(Phi) * Math.Sin(Theta) * Math.Cos(Psi) - Math.Cos(Phi) * Math.Sin(Psi)) * V + 
+            (Math.Cos(Phi) * Math.Sin(Theta) * Math.Cos(Psi) + Math.Sin(Phi) * Math.Sin(Psi)) * W;
 
-        double dy = Math.Cos(theta) * Math.Sin(psi) * u +
-            (Math.Sin(phi) * Math.Sin(theta) * Math.Sin(psi) + Math.Cos(phi) * Math.Cos(psi)) * v + 
-            (Math.Cos(phi) * Math.Sin(theta) * Math.Sin(psi) - Math.Sin(phi) * Math.Cos(psi)) * w;
+        double dy = Math.Cos(Theta) * Math.Sin(Psi) * U +
+            (Math.Sin(Phi) * Math.Sin(Theta) * Math.Sin(Psi) + Math.Cos(Phi) * Math.Cos(Psi)) * V + 
+            (Math.Cos(Phi) * Math.Sin(Theta) * Math.Sin(Psi) - Math.Sin(Phi) * Math.Cos(Psi)) * W;
 
-        double dz = -Math.Sin(theta) * u + 
-            Math.Sin(phi) * Math.Cos(theta) * v + 
-            Math.Cos(phi) * Math.Cos(theta) * w;
+        double dz = -Math.Sin(Theta) * U + 
+            Math.Sin(Phi) * Math.Cos(Theta) * V + 
+            Math.Cos(Phi) * Math.Cos(Theta) * W;
 
             
-        double dphi = p + Math.Sin(phi) * Math.Tan(theta) * q + Math.Cos(phi) * Math.Tan(theta) * r;
-        double dtheta = Math.Cos(phi) * q - Math.Sin(phi) * r;
-        double dpsi = Math.Sin(phi) * (1 / Math.Cos(theta)) * q + Math.Cos(phi) * (1 / Math.Cos(theta)) * r;
+        double dPhi = P + Math.Sin(Phi) * Math.Tan(Theta) * Q + Math.Cos(Phi) * Math.Tan(Theta) * R;
+        double dTheta = Math.Cos(Phi) * Q - Math.Sin(Phi) * R;
+        double dpsi = Math.Sin(Phi) * (1 / Math.Cos(Theta)) * Q + Math.Cos(Phi) * (1 / Math.Cos(Theta)) * R;
 
         // FORCES
         //  forces = (FG_x, FA_x, FT_x, FG_y, FA_y, FT_y, FG_z, FA_z, FT_z)
@@ -108,9 +108,9 @@ public class FixedWingDynamics
         double Fy = FG_y + FA_y + FT_y;
         double Fz = FG_z + FA_z + FT_z;
         
-        double du = r * v - q * w + Fx / m;
-        double dv = p * w - r * u + Fy / m;
-        double dw = q * u - p * v + Fz / m;
+        double du = R * V - Q * W + Fx / m;
+        double dv = P * W - R * U + Fy / m;
+        double dw = Q * U - P * V + Fz / m;
         
         // Moments
         // moments = (
@@ -125,36 +125,36 @@ public class FixedWingDynamics
         double M = moments[1];
         double N = moments[2];
                 
-        // double C = Ix * Iz - Math.Pow(Ixz, 2);
-        // double C1 = (Ixz * (Ix - Iy + Iz)) / C;
-        // double C2 = (Iz * (Iz - Iy) + Math.Pow(Ixz, 2)) / C;
-        // double C3 = Iz / C;
-        // double C4 = Ixz / C;
-        // double C5 = (Iz - Ix) / Iy;
-        // double C6 = Ixy / Iy;
-        // double C7 = ((Ix - Iy) * Ix + Math.Pow(Ixy, 2)) / C;
-        // double C8 = Ix / C;
+        double C = Ix * Iz - Math.Pow(Ixz, 2);
+        double C1 = Ixz * (Ix - Iy + Iz) / C;
+        double C2 = (Iz * (Iz - Iy) + Math.Pow(Ixz, 2)) / C;
+        double C3 = Iz / C;
+        double C4 = Ixz / C;
+        double C5 = (Iz - Ix) / Iy;
+        double C6 = Ixy / Iy;
+        double C7 = ((Ix - Iy) * Ix + Math.Pow(Ixy, 2)) / C;
+        double C8 = Ix / C;
         
-        // double dp = C1 * p * q - C2 * q * r + C3 * L + C4 * N;
-        // double dq = C5 * p * r - C6 * (Math.Pow(p, 2) - Math.Pow(r, 2)) + M / Iy;
-        // double dr = C7 * p * q - C1 * q * r + C4 * L + C8 * N;
+        double dp = C1 * P * Q - C2 * Q * R + C3 * L + C4 * N;
+        double dq = C5 * P * R - C6 * (Math.Pow(P, 2) - Math.Pow(R, 2)) + M / Iy;
+        double dr = C7 * P * Q - C1 * Q * R + C4 * L + C8 * N;
         
-        double dp = ( -(Iz - Iy) * q * r + L ) / Ix;
+        // double dp = ( -(Iz - Iy) * q * r + L ) / Ix;
+        // double dq = ( -(Ix - Iz) * r * p + M ) / Iy;
+        // double dr = ( -(Iy - Ix) * p * q + N ) / Iz;
         Debug.Log("L: "+L);
         Debug.Log("dp: "+dp);
-        double dq = ( -(Ix - Iz) * r * p + M ) / Iy;
-        double dr = ( -(Iy - Ix) * p * q + N ) / Iz;
 
-        double[] ret = {dx, dy, dz, du, dv, dw, dphi, dtheta, dpsi, dp, dq, dr};
+        double[] ret = {dx, dy, dz, du, dv, dw, dPhi, dTheta, dpsi, dp, dq, dr};
 
         return ret;
     }
 
     private double[] FixedWingDynamics_getForces()
     {
-        double Ubar = u - Uw;
-        double Vbar = v - Vw;
-        double Wbar = w - Ww;
+        double Ubar = U - Uw;
+        double Vbar = V - Vw;
+        double Wbar = W - Ww;
 
         double V_a = Math.Sqrt(Math.Pow(Ubar, 2) + Math.Pow(Vbar, 2) + Math.Pow(Wbar, 2));
 
@@ -163,13 +163,13 @@ public class FixedWingDynamics
 
         //// FORCES
         // Gravitational
-        double FG_x = m * g * -Math.Sin(theta);
-        double FG_y = m * g * Math.Sin(phi) * Math.Cos(theta);
-        double FG_z = m * g * Math.Cos(phi) * Math.Cos(theta);
+        double FG_x = m * g * -Math.Sin(Theta);
+        double FG_y = m * g * Math.Sin(Phi) * Math.Cos(Theta);
+        double FG_z = m * g * Math.Cos(Phi) * Math.Cos(Theta);
 
         // Thrust
         double throttle = k_motor * Ut + q_motor;
-        double Ft = 0.5 * rho * rotor_A * C_T * (Math.Pow((rotor_r * throttle), 2) - Math.Pow(V_a, 2));
+        double Ft = 0.5 * rho * rotor_A * C_T * (Math.Pow(rotor_r * throttle, 2) - Math.Pow(V_a, 2));
 
         double FT_x = Ft;
         double FT_y = 0;
@@ -178,15 +178,15 @@ public class FixedWingDynamics
         // Aerodynamic
         double CD_0 = 0;
         double CD_alpha = getCD_Basic(alpha) * alpha;
-        double CD_q = 0 * chord / (2 * V_a) * q;
+        double CD_q = 0 * chord / (2 * V_a) * Q;
         double CD_ele = getCD_Elevator(alpha, Ue) * Ue;
 
         double CY_beta = -0.3073 * beta;
-        double CY_p = getCy_RollRate(alpha) * b * p / (2 * V_a);
+        double CY_p = getCy_RollRate(alpha) * b * P / (2 * V_a);
 
         double CL_0 = 0;
         double CL_alpha = getCL_Basic(alpha) * alpha;
-        double CL_q = 7.9520 * chord / (2 * V_a) * q;
+        double CL_q = 7.9520 * chord / (2 * V_a) * Q;
         double CL_ele = getCL_Elevator(Ue) * Ue;
 
         double CD = CD_0 + CD_alpha + CD_q + CD_ele;
@@ -258,7 +258,7 @@ public class FixedWingDynamics
 
         // Perform bilinear interpolation
         // ret = interp2(Ue_values, alpha_values, cd_elevator_values, Ue, alpha, "linear");
-        // ret(isnan(ret))=100;
+        // ret(isNan(ret))=100;
         // return ret;
     }
 
@@ -296,9 +296,9 @@ public class FixedWingDynamics
 
 
     private double[] FixedWingDynamics_getMoments() {
-        double Ubar = u - Uw;
-        double Vbar = v - Vw;
-        double Wbar = w - Ww;
+        double Ubar = U - Uw;
+        double Vbar = V - Vw;
+        double Wbar = W - Ww;
 
         double V_a = Math.Sqrt(Math.Pow(Ubar, 2) + Math.Pow(Vbar, 2) + Math.Pow(Wbar, 2));
 
@@ -307,21 +307,21 @@ public class FixedWingDynamics
 
         // Aerodynamic
         double Cl_beta = getCl_Beta(alpha) * beta;
-        double Cl_p = getCl_RollRate(alpha) * b / (2 * V_a) * p;
-        double Cl_r = getCl_YawRate(alpha) * b / (2 * V_a) * r;
+        double Cl_p = getCl_RollRate(alpha) * b / (2 * V_a) * P;
+        double Cl_r = getCl_YawRate(alpha) * b / (2 * V_a) * R;
         double Cl_ail = getCl_Aileron(Ua) * Ua;
         double Cl_rud = UrFactor * Ur;
-        Debug.Log("p: "+p);
+        Debug.Log("p: "+P);
         Debug.Log("Cl_p: "+Cl_p);
         
         double Cm_0 = 0;
         double Cm_alpha = getCm_Basic(alpha) * alpha;
-        double Cm_q = -16.58 * chord / (2 * V_a) * q;
+        double Cm_q = -16.58 * chord / (2 * V_a) * Q;
         double Cm_ele = getCm_Elevator(Ue) * Ue;
 
         double Cn_beta = 0.0709 * beta;
-        double Cn_p = getCn_RollRate(alpha) * b / (2 * V_a) * p;
-        double Cn_r = getCn_YawRate(alpha) * b / (2 * V_a) * r;
+        double Cn_p = getCn_RollRate(alpha) * b / (2 * V_a) * P;
+        double Cn_r = getCn_YawRate(alpha) * b / (2 * V_a) * R;
         double Cn_ail = getCn_Aileron(alpha, Ua) * Ua;
         double Cn_rud = UrFactor * Ur;
 
