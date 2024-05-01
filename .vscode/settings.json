@@ -53,7 +53,7 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "Drone Modelling.sln",
+    "dotnet.defaultSolution": "AERO_Unity.sln",
     "cSpell.words": [
         "dphi",
         "dpsi",
