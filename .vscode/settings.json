@@ -60,6 +60,7 @@
         "dtheta",
         "interp",
         "Mathf",
+        "Rigidbody",
         "rollrate",
         "Ubar",
         "Vbar",

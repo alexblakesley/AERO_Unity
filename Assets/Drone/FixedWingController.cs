@@ -112,7 +112,7 @@ public class FixedWingController : MonoBehaviour
         angularVelocity += new Vector3(dp, dq, dr);
 
         // Update Camera Pos
-        // Camera.transform.position = new Vector3(x + dx - 0.5f, z + dz + 1f, y + dy);
+        Camera.transform.position = new Vector3(x + dx - 1.83f, z + dz + 0.64f, y + dy);
     }
 
     // Actions
