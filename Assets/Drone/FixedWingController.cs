@@ -101,15 +101,14 @@ public class FixedWingController : MonoBehaviour
         float dr =      (float) derivatives[11] * Time.fixedDeltaTime * Mathf.Rad2Deg;
         
         position += new Vector3(dx, dy, dz);
-        go.transform.position = new Vector3(position.x, position.z, position.y);
-        
         velocity += new Vector3(du, dv, dw);
-
         eulerAngles += new Vector3(dphi, dtheta, dpsi);
-        rotation.eulerAngles = new Vector3(eulerAngles.x, eulerAngles.z, -eulerAngles.y);
-        go.transform.rotation = rotation;
-        
         angularVelocity += new Vector3(dp, dq, dr);
+        
+        // Alter drone GO position & rotation
+        go.transform.position = new Vector3(position.x, position.z, position.y);
+        rotation.eulerAngles = new Vector3(eulerAngles.x, -eulerAngles.z, -eulerAngles.y);
+        go.transform.rotation = rotation;
 
         // Update Camera Pos
         Camera.transform.position = new Vector3(x + dx - 1.83f, z + dz + 0.64f, y + dy);
