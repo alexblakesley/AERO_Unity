@@ -53,8 +53,7 @@ public class FixedWingController : MonoBehaviour
         velocity = new Vector3(60, 0, 0);
 
         eulerAngles = new Vector3(0, 0, 0);
-        rotation.eulerAngles = eulerAngles;
-        go.transform.rotation = rotation;
+        go.transform.eulerAngles = eulerAngles;
 
         angularVelocity = new Vector3(0, 0, 0);
     }
@@ -106,12 +105,11 @@ public class FixedWingController : MonoBehaviour
         angularVelocity += new Vector3(dp, dq, dr);
         
         // Alter drone GO position & rotation
-        go.transform.position = new Vector3(position.x, position.z, position.y);
-        rotation.eulerAngles = new Vector3(eulerAngles.x, -eulerAngles.z, -eulerAngles.y);
-        go.transform.rotation = rotation;
+        go.transform.position = new Vector3(position.x, -position.z, -position.y);
+        go.transform.eulerAngles = new Vector3(-eulerAngles.x, eulerAngles.z, eulerAngles.y);
 
         // Update Camera Pos
-        Camera.transform.position = new Vector3(x + dx - 1.83f, z + dz + 0.64f, y + dy);
+        Camera.transform.position = new Vector3(position.x - 1.83f, -position.z + 0.64f, -position.y);
     }
 
     // Actions

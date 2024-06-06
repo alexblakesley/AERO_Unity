@@ -101,27 +101,28 @@ public class FixedWingDynamicsAP
         double dY = Math.Cos(Theta) * Math.Sin(Psi) * U +
             (Math.Sin(Phi) * Math.Sin(Theta) * Math.Sin(Psi) + Math.Cos(Phi) * Math.Cos(Psi)) * V + 
             (Math.Cos(Phi) * Math.Sin(Theta) * Math.Sin(Psi) - Math.Sin(Phi) * Math.Cos(Psi)) * W;
+            // (Math.Cos(Psi) * Math.Sin(Theta) * Math.Sin(Psi) - Math.Sin(Psi) * Math.Cos(Psi)) * W;
 
         double dZ = -Math.Sin(Theta) * U + 
             Math.Sin(Phi) * Math.Cos(Theta) * V + 
             Math.Cos(Phi) * Math.Cos(Theta) * W;
 
             
-        double dPhi = P + Math.Sin(Phi) * Math.Tan(Theta) * Q + Math.Cos(Phi) * Math.Tan(Theta) * R;
-        double dTheta = Math.Cos(Phi) * Q - Math.Sin(Phi) * R;
-        double dPsi = Math.Sin(Phi) * (1 / Math.Cos(Theta)) * Q + Math.Cos(Phi) * (1 / Math.Cos(Theta)) * R;
+        // double dPhi = P + Math.Sin(Phi) * Math.Tan(Theta) * Q + Math.Cos(Phi) * Math.Tan(Theta) * R;
+        // double dTheta = Math.Cos(Phi) * Q - Math.Sin(Phi) * R;
+        double dPsi = Math.Sin(Phi) * (1 / Math.Cos(Theta)) * Q + Math.Cos(Psi) * (1 / Math.Cos(Theta)) * R;
 
         double[] longitudinal = getLongitudinal();
         double dU = longitudinal[0];
         double dW = longitudinal[1];
         double dQ = longitudinal[2];
-        dTheta = longitudinal[3];
+        double dTheta = longitudinal[3];
         
         double[] lateral = getLateral();
         double dV = lateral[0];
         double dP = lateral[1];
         double dR = lateral[2];
-        dPhi = lateral[3];
+        double dPhi = lateral[3];
 
         double[] ret = {dX, dY, dZ, dU, dV, dW, dPhi, dTheta, dPsi, dP, dQ, dR};
 
@@ -131,27 +132,28 @@ public class FixedWingDynamicsAP
     private double[] getLongitudinal()
     {
         double gamma0 = Phi;
+        // double gamma0 = 0;
 
-        double xudim=0.5*rho*uinf*sw*xu;
-        double xwdim=0.5*rho*uinf*sw*xw;
+        double xudim=   0.5*rho*uinf*sw*xu;
+        double xwdim=   0.5*rho*uinf*sw*xw;
         
-        double zudim=0.5*rho*uinf*sw*zu;
-        double zwdim=0.5*rho*uinf*sw*zw;
-        double zwddim=0.5*rho*sw*c*zwd;
-        double zqdim=.5*rho*uinf*sw*c*zq;
+        double zudim=   0.5*rho*uinf*sw*zu;
+        double zwdim=   0.5*rho*uinf*sw*zw;
+        double zwddim=  0.5*rho*sw*c*zwd;
+        double zqdim=   0.5*rho*uinf*sw*c*zq;
         
-        double mudim=0.5*rho*uinf*sw*c*mu;
-        double mwdim=0.5*rho*uinf*sw*c*mw;
-        double mwddim=0.5*rho*sw*Math.Pow(c, 2)*mwd;
-        double mqdim=0.5*rho*uinf*sw*Math.Pow(c, 2)*mq;
+        double mudim=   0.5*rho*uinf*sw*c*mu;
+        double mwdim=   0.5*rho*uinf*sw*c*mw;
+        double mwddim=  0.5*rho*sw*Math.Pow(c, 2)*mwd;
+        double mqdim=   0.5*rho*uinf*sw*Math.Pow(c, 2)*mq;
         
-        double xelvdim=0.5*rho*Math.Pow(uinf, 2)*sw*xelv;
-        double zelvdim=0.5*rho*Math.Pow(uinf, 2)*sw*zelv;
-        double melvdim=0.5*rho*Math.Pow(uinf, 2)*sw*c*melv;
+        double xelvdim= 0.5*rho*Math.Pow(uinf, 2)*sw*xelv;
+        double zelvdim= 0.5*rho*Math.Pow(uinf, 2)*sw*zelv;
+        double melvdim= 0.5*rho*Math.Pow(uinf, 2)*sw*c*melv;
         
-        double xthrdim=0.5*rho*Math.Pow(uinf, 2)*sw*xthr;
-        double zthrdim=0.5*rho*Math.Pow(uinf, 2)*sw*zthr;
-        double mthrdim=0.5*rho*Math.Pow(uinf, 2)*sw*c*mthr;
+        double xthrdim= 0.5*rho*Math.Pow(uinf, 2)*sw*xthr;
+        double zthrdim= 0.5*rho*Math.Pow(uinf, 2)*sw*zthr;
+        double mthrdim= 0.5*rho*Math.Pow(uinf, 2)*sw*c*mthr;
 
         double [][] mp = new double[4][];
         mp[0] = new double[] { m, 0,         0,  0};
@@ -162,7 +164,7 @@ public class FixedWingDynamicsAP
 
         double[][] ap = new double[4][];
         ap[0] = new double[] {xudim, xwdim,  0.0,           -m*g*Math.Cos(gamma0)};
-        ap[1] = new double[] {zudim, zwdim,  zqdim+m*uinf,  m*g*Math.Sin(gamma0)};
+        ap[1] = new double[] {zudim, zwdim,  zqdim+m*uinf,  -m*g*Math.Sin(gamma0)};
         ap[2] = new double[] {mudim, mwdim,  mqdim,         0.0};
         ap[3] = new double[] {0.0,   0.0,    1.0,           0.0};
         
@@ -199,21 +201,21 @@ public class FixedWingDynamicsAP
 
     private double[] getLateral()
     {
-        double yvdim=0.5*rho*uinf*sw*yv;
-        double lvdim=0.5*rho*uinf*sw*b*lv;
-        double lpdim=0.5*rho*uinf*sw*Math.Pow(b, 2)*lp;
-        double lrdim=0.5*rho*uinf*sw*Math.Pow(b, 2)*lr;
-        double nvdim=0.5*rho*uinf*sw*b*nv;
-        double npdim=0.5*rho*uinf*sw*Math.Pow(b, 2)*np;
-        double nrdim=0.5*rho*uinf*sw*Math.Pow(b, 2)*nr;
+        double yvdim=   0.5*rho*uinf*sw*yv;
+        double lvdim=   0.5*rho*uinf*sw*b*lv;
+        double lpdim=   0.5*rho*uinf*sw*Math.Pow(b, 2)*lp;
+        double lrdim=   0.5*rho*uinf*sw*Math.Pow(b, 2)*lr;
+        double nvdim=   0.5*rho*uinf*sw*b*nv;
+        double npdim=   0.5*rho*uinf*sw*Math.Pow(b, 2)*np;
+        double nrdim=   0.5*rho*uinf*sw*Math.Pow(b, 2)*nr;
 
-        double yaildim=0.5*rho*Math.Pow(uinf, 2)*sw*yail;
-        double laildim=0.5*rho*Math.Pow(uinf, 2)*sw*b*lail;
-        double naildim=0.5*rho*Math.Pow(uinf, 2)*sw*b*nail;
+        double yaildim= 0.5*rho*Math.Pow(uinf, 2)*sw*yail;
+        double laildim= 0.5*rho*Math.Pow(uinf, 2)*sw*b*lail;
+        double naildim= 0.5*rho*Math.Pow(uinf, 2)*sw*b*nail;
 
-        double yruddim=0.5*rho*Math.Pow(uinf, 2)*sw*yrud;
-        double lruddim=0.5*rho*Math.Pow(uinf, 2)*sw*b*lrud;
-        double nruddim=0.5*rho*Math.Pow(uinf, 2)*sw*b*nrud;
+        double yruddim= 0.5*rho*Math.Pow(uinf, 2)*sw*yrud;
+        double lruddim= 0.5*rho*Math.Pow(uinf, 2)*sw*b*lrud;
+        double nruddim= 0.5*rho*Math.Pow(uinf, 2)*sw*b*nrud;
 
 
         double [][] mp = new double[4][];
@@ -225,7 +227,7 @@ public class FixedWingDynamicsAP
 
         double[][] ap = new double[4][];
         ap[0] = new double[] {yvdim, 0.0,    -m*uinf, m*g};
-        ap[1] = new double[] {lvdim, lpdim,  lrdim,   0};
+        ap[1] = new double[] {lvdim, lpdim,  lrdim,   0.0};
         ap[2] = new double[] {nvdim, npdim,  nrdim,   0.0};
         ap[3] = new double[] {0.0,   1.0,    0.0,     0.0};
         
@@ -241,14 +243,22 @@ public class FixedWingDynamicsAP
         bp[2] = new double[] {naildim,  nruddim,  nvdim};
         bp[3] = new double[] {0.0,      0.0,      0.0};
         
+        // double[][] u = new double[3][];
+        // u[0] = new double[] {0};
+        // u[1] = new double[] {Ua};
+        // u[2] = new double[] {Ur};
+        
         double[][] u = new double[3][];
-        u[0] = new double[] {0};
-        u[1] = new double[] {Ua};
-        u[2] = new double[] {Ur};
+        u[0] = new double[] {Ua};
+        u[1] = new double[] {Ur};
+        u[2] = new double[] {0};
+
+        double[][] aa = MatrixControl.MatrixProduct(mpinv, ap);
+        double[][] bb = MatrixControl.MatrixProduct(mpinv, bp);
 
         double[][] xdot = MatrixControl.MatrixAdd(
-            MatrixControl.MatrixProduct(MatrixControl.MatrixProduct(mpinv, ap), x), 
-            MatrixControl.MatrixProduct(MatrixControl.MatrixProduct(mpinv, bp), u)
+            MatrixControl.MatrixProduct(aa, x), 
+            MatrixControl.MatrixProduct(bb, u)
         );
 
         double[] ret = {xdot[0][0], xdot[1][0], xdot[2][0], xdot[3][0]};

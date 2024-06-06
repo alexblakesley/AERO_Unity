@@ -597,7 +597,7 @@ PrefabInstance:
     - target: {fileID: 1388710418429386911, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
       propertyPath: m_Name
-      value: DroneRB
+      value: DroneRBWrapper
       objectReference: {fileID: 0}
     - target: {fileID: 1388710418429386911, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
@@ -654,30 +654,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2771005954375065485, guid: bc3195111a74d964681905470c7fc18e,
+    - target: {fileID: 6626823814303372110, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
-      propertyPath: m_Mass
+      propertyPath: m_BackGroundColor.a
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2771005954375065485, guid: bc3195111a74d964681905470c7fc18e,
+    - target: {fileID: 6626823814303372110, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
-      propertyPath: m_UseGravity
+      propertyPath: m_BackGroundColor.b
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2771005954375065485, guid: bc3195111a74d964681905470c7fc18e,
+    - target: {fileID: 6626823814303372110, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.05
+      propertyPath: m_BackGroundColor.g
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2771005954375065485, guid: bc3195111a74d964681905470c7fc18e,
+    - target: {fileID: 6626823814303372110, guid: bc3195111a74d964681905470c7fc18e,
         type: 3}
-      propertyPath: m_ImplicitCom
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2771005954375065485, guid: bc3195111a74d964681905470c7fc18e,
-        type: 3}
-      propertyPath: m_ImplicitTensor
-      value: 1
+      propertyPath: m_BackGroundColor.r
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -696,6 +691,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DroneWrapper
+      objectReference: {fileID: 0}
+    - target: {fileID: 1388710418429386911, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1388710418429386913, guid: a79713e7fc4f9b8449eb3c535aeca820,
         type: 3}
@@ -745,6 +745,56 @@ PrefabInstance:
     - target: {fileID: 1388710418429386913, guid: a79713e7fc4f9b8449eb3c535aeca820,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1574529559564165482, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706093386815946425, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706093386815946425, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706093386815946425, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706093386815946425, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831401291783797062, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831401291783797062, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831401291783797062, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831401291783797062, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795991303331944344, guid: a79713e7fc4f9b8449eb3c535aeca820,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6626823814303372110, guid: a79713e7fc4f9b8449eb3c535aeca820,
