@@ -28,7 +28,6 @@ public class FixedWingDynamicsAP
     public double sw=17.09;
 
     public double rho=1.225;
-    public double uinf=53.75;
     public double m=1247.0;
     public double Ix=1421.0;
     public double Iy=4068.0;
@@ -94,6 +93,8 @@ public class FixedWingDynamicsAP
 
     public double[] GetDerivatives()
     {
+        Z = -Z;
+        W = -W;
         double dX = Math.Cos(Theta) * Math.Cos(Psi) * U + 
             (Math.Sin(Phi) * Math.Sin(Theta) * Math.Cos(Psi) - Math.Cos(Phi) * Math.Sin(Psi)) * V + 
             (Math.Cos(Phi) * Math.Sin(Theta) * Math.Cos(Psi) + Math.Sin(Phi) * Math.Sin(Psi)) * W;
@@ -124,7 +125,7 @@ public class FixedWingDynamicsAP
         double dR = lateral[2];
         double dPhi = lateral[3];
 
-        double[] ret = {dX, dY, dZ, dU, dV, dW, dPhi, dTheta, dPsi, dP, dQ, dR};
+        double[] ret = {dX, dY, -dZ, dU, dV, -dW, dPhi, dTheta, dPsi, dP, dQ, dR};
 
         return ret;
     }
@@ -132,6 +133,7 @@ public class FixedWingDynamicsAP
     private double[] getLongitudinal()
     {
         double gamma0 = Phi;
+        double uinf = U;
         // double gamma0 = 0;
 
         double xudim=   0.5*rho*uinf*sw*xu;
@@ -201,6 +203,8 @@ public class FixedWingDynamicsAP
 
     private double[] getLateral()
     {
+        double uinf = U;
+
         double yvdim=   0.5*rho*uinf*sw*yv;
         double lvdim=   0.5*rho*uinf*sw*b*lv;
         double lpdim=   0.5*rho*uinf*sw*Math.Pow(b, 2)*lp;

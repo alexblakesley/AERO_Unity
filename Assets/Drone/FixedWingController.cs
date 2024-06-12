@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FixedWingController : MonoBehaviour
@@ -105,11 +105,11 @@ public class FixedWingController : MonoBehaviour
         angularVelocity += new Vector3(dp, dq, dr);
         
         // Alter drone GO position & rotation
-        go.transform.position = new Vector3(position.x, -position.z, -position.y);
+        go.transform.position = new Vector3(position.x, position.z, -position.y);
         go.transform.eulerAngles = new Vector3(-eulerAngles.x, eulerAngles.z, eulerAngles.y);
 
         // Update Camera Pos
-        Camera.transform.position = new Vector3(position.x - 1.83f, -position.z + 0.64f, -position.y);
+        Camera.transform.position = new Vector3(position.x - 1.83f, position.z + 0.64f, -position.y);
     }
 
     // Actions
