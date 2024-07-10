@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class FixedWingController : MonoBehaviour
+public class HybridController : MonoBehaviour
 {
     [SerializeField]
-    public InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA;
+    public InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA, UForBackIA, ULeftRightIA;
     public GameObject go;
     public GameObject Camera;
 
@@ -16,6 +16,14 @@ public class FixedWingController : MonoBehaviour
     public float Ue;
     [ReadOnly]
     public float Ur;
+    [ReadOnly]
+    public float U1;
+    [ReadOnly]
+    public float U2;
+    [ReadOnly]
+    public float U3;
+    [ReadOnly]
+    public float U4;
     [ReadOnly]
     public Vector3 position;
     [ReadOnly]
@@ -31,6 +39,7 @@ public class FixedWingController : MonoBehaviour
     public float UeMinMax;
     public float UaMinMax;
     public float UrMinMax;
+    public float UiVal;
 
 
     private void Awake() {
@@ -42,10 +51,14 @@ public class FixedWingController : MonoBehaviour
     private void Start()
     {
         // Setup initial condition
-        Ut = 0;
+        Ut = 0.0f;
         Ua = 0.0f;
-        Ue = 0.2f;
+        Ue = 0.0f;
         Ur = 0.0f;
+        U1 = 0.0f;
+        U2 = 0.0f;
+        U3 = 0.0f;
+        U4 = 0.0f;
 
         position = new Vector3(0, 0, 0);
         go.transform.position = position;
@@ -60,6 +73,7 @@ public class FixedWingController : MonoBehaviour
 
     private void FixedUpdate()
     {        
+        // Get control from inputs
         float newUe = Ue + elevatorIA.action.ReadValue<float>();
         Ue = Mathf.Clamp(newUe, -UeMinMax, UeMinMax);
         
@@ -69,6 +83,23 @@ public class FixedWingController : MonoBehaviour
         float newUr = Ur + rudderIA.action.ReadValue<float>();
         Ur = Mathf.Clamp(newUr, -UrMinMax, UrMinMax);
         
+        float ForBack = UForBackIA.action.ReadValue<float>();
+        float LeftRight = ULeftRightIA.action.ReadValue<float>();
+
+        U1 = U2 = U3 = U4 = 0;
+        if (ForBack > 0){
+            U3 = U4 = UiVal;
+        } else {
+            U1 = U2 = UiVal;
+        }
+
+        if (LeftRight > 0){
+            U1 = U3 = UiVal;
+        } else {
+            U2 = U4 = UiVal;
+        }
+
+        // Setup state variables from internal state
         float x =       position.x;
         float y =       position.y;
         float z =       position.z;
@@ -82,8 +113,9 @@ public class FixedWingController : MonoBehaviour
         float q =       angularVelocity.y * Mathf.Deg2Rad;
         float r =       angularVelocity.z * Mathf.Deg2Rad;
                 
-        FixedWingDynamicsAP dynamics = new(x, y, z, u, v, w, phi, theta, psi, p, q, r, Ua, Ue, Ur, Ut);
+        HybridDynamics dynamics = new(x, y, z, u, v, w, phi, theta, psi, p, q, r, Ua, Ue, Ur, Ut, U1, U2, U3, U4);
 
+        // Calculate derivatives
         // derivatives = {dx, dy, dz, du, dv, dw, dphi, dtheta, dpsi, dp, dq, dr}
         double[] derivatives = dynamics.GetDerivatives();
         float dx =      (float) derivatives[0]  * Time.fixedDeltaTime;
@@ -99,6 +131,7 @@ public class FixedWingController : MonoBehaviour
         float dq =      (float) derivatives[10] * Time.fixedDeltaTime * Mathf.Rad2Deg;
         float dr =      (float) derivatives[11] * Time.fixedDeltaTime * Mathf.Rad2Deg;
         
+        // Update internal state
         position += new Vector3(dx, dy, dz);
         velocity += new Vector3(du, dv, dw);
         eulerAngles += new Vector3(dphi, dtheta, dpsi);

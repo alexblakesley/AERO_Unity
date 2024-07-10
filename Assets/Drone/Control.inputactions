@@ -1,8 +1,8 @@
 {
-    "name": "FixedWingControl",
+    "name": "Control",
     "maps": [
         {
-            "name": "FixedWingControl",
+            "name": "Control",
             "id": "c95dc705-af52-435f-b125-5d86356bf3c3",
             "actions": [
                 {
@@ -36,6 +36,24 @@
                     "name": "Aileron",
                     "type": "Button",
                     "id": "42fba0ee-0a2d-4193-b9a5-3bd856662953",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuadcopterForBack",
+                    "type": "Button",
+                    "id": "c9aa446c-fd60-4dde-9fc6-bc341f4e9c11",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuadcopterLeftRight",
+                    "type": "Button",
+                    "id": "b40f1c62-f0eb-4d5a-a92c-1c3431b25246",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -150,6 +168,72 @@
                     "processors": "",
                     "groups": "",
                     "action": "Aileron",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "9c414078-d7d9-4ff4-9a6a-b2afa5841b19",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterForBack",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "b1ff3a54-9094-4391-8b5a-e530f2d953e2",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterForBack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "dc0ea3d8-3def-494c-9a07-a81552082215",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterForBack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "ea599f33-17dc-4106-b9a0-f430df80e16f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterLeftRight",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "722c6380-d4f8-4b4d-b626-0e68e0f18e0d",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterLeftRight",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "f41b910e-24f8-4e5c-8bce-66c3e9d85180",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuadcopterLeftRight",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
