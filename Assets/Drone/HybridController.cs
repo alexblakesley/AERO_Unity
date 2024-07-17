@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class HybridController : MonoBehaviour
@@ -89,13 +89,13 @@ public class HybridController : MonoBehaviour
         U1 = U2 = U3 = U4 = 0;
         if (ForBack > 0){
             U3 = U4 = UiVal;
-        } else {
+        } else if (ForBack < 0) {
             U1 = U2 = UiVal;
         }
 
         if (LeftRight > 0){
             U1 = U3 = UiVal;
-        } else {
+        } else if (LeftRight < 0) {
             U2 = U4 = UiVal;
         }
 
