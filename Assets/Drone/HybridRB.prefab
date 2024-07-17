@@ -114,10 +114,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1388710418429386913}
-  - component: {fileID: 6333907910097053538}
+  - component: {fileID: 8930104168839181283}
   - component: {fileID: 1388710418429386915}
   m_Layer: 0
-  m_Name: Hybrid
+  m_Name: HybridRB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,7 +140,7 @@ Transform:
   - {fileID: 3706093386815946425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6333907910097053538
+--- !u!114 &8930104168839181283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1388710418429386911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0e57a184ac6a6d4bb695f46a56aae50, type: 3}
+  m_Script: {fileID: 11500000, guid: 215a44064a88cd54fae1a8673fa57cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   throttleIA: {fileID: -8985959703487038311, guid: abb89ed832cdf8a4dac82cfb9a1a655d,
@@ -167,6 +167,7 @@ MonoBehaviour:
   ULeftRightIA: {fileID: -1492924490756195, guid: abb89ed832cdf8a4dac82cfb9a1a655d,
     type: 3}
   go: {fileID: 6755835165063664730}
+  rb: {fileID: 5644274439166747952}
   Camera: {fileID: 1399611656901476301}
   Ut: 0
   Ua: 0
@@ -1100,6 +1101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3706093386815946425}
+  - component: {fileID: 5644274439166747952}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -1126,6 +1128,33 @@ Transform:
   - {fileID: 3772787711322173795}
   m_Father: {fileID: 1388710418429386913}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &5644274439166747952
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755835165063664730}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8432633343247591059
 GameObject:
   m_ObjectHideFlags: 0

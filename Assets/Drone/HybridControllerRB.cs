@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HybridController : MonoBehaviour
+public class HybridControllerRB : MonoBehaviour
 {
     [SerializeField]
     public InputActionReference throttleIA, aileronIA, elevatorIA, rudderIA, UMotorsIA, UForBackIA, ULeftRightIA;
     public GameObject go;
+    public Rigidbody rb;
     public GameObject Camera;
 
     [ReadOnly]
@@ -64,10 +65,7 @@ public class HybridController : MonoBehaviour
         Ua = 0.0f;
         Ue = 0.0f;
         Ur = 0.0f;
-        U1 = 0.0f;
-        U2 = 0.0f;
-        U3 = 0.0f;
-        U4 = 0.0f;
+        URotorBase = 0.0f;
 
         position = new Vector3(0, 0, 0);
         go.transform.position = position;
@@ -145,13 +143,15 @@ public class HybridController : MonoBehaviour
         velocity += new Vector3(du, dv, dw);
         eulerAngles += new Vector3(dphi, dtheta, dpsi);
         angularVelocity += new Vector3(dp, dq, dr);
-        
-        // Alter drone GO position & rotation
-        go.transform.position = new Vector3(position.x, position.z, -position.y);
-        go.transform.eulerAngles = new Vector3(-eulerAngles.x, eulerAngles.z, eulerAngles.y);
+
+        // rb.velocity = new Vector3(dx, dz, dy);
+        rb.AddForce(new Vector3(du, dw, dv), ForceMode.VelocityChange);
+
+        // rb.angularVelocity = new Vector3(-dphi, dpsi, dtheta);
+        rb.AddTorque(new Vector3(-dp, dr, dq), ForceMode.VelocityChange);
 
         // Update Camera Pos
-        Camera.transform.position = new Vector3(position.x - 1.83f, position.z + 0.64f, -position.y);
+        Camera.transform.position = new Vector3(go.transform.position.x - 1.83f, go.transform.position.y + 0.64f, go.transform.position.z);
     }
 
     // Actions

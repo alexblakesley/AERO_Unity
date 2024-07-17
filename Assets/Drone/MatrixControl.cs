@@ -24,6 +24,24 @@ class MatrixControl
     return result;
   }
 
+  public static double[][] MatrixTranspose(double[][] matrix)
+{
+    int w = matrix.Length;
+    int h = matrix[0].Length;
+
+    double[][] result = MatrixCreate(h, w);
+
+    for (int i = 0; i < w; i++)
+    {
+        for (int j = 0; j < h; j++)
+        {
+            result[j][i] = matrix[i][j];
+        }
+    }
+
+    return result;
+}
+
   public static double[][] MatrixProduct(double[][] matrixA, double[][] matrixB)
   {
     int aRows = matrixA.Length; int aCols = matrixA[0].Length;
@@ -219,7 +237,7 @@ class MatrixControl
     return result;
   }
 
-  public static double[][] MatrixAdd(double[][] A, double[][] B)
+  public static double[][] MatrixAdd(double[][] A, double[][] B, bool Subtract = false)
   {
     int aRows = A.Length; int aCols = A[0].Length;
     int bRows = B.Length;
@@ -232,7 +250,11 @@ class MatrixControl
     {
       for (int j = 0; j < aCols; j++)
       {
-        result[i][j] = A[i][j] + B[i][j];
+        if (Subtract){
+            result[i][j] = A[i][j] - B[i][j];
+        } else {
+            result[i][j] = A[i][j] + B[i][j];
+        }
       }
     }
     return result;
