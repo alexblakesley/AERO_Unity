@@ -122,7 +122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1388710418429386913
 Transform:
   m_ObjectHideFlags: 0
@@ -185,9 +185,9 @@ MonoBehaviour:
   UeMinMax: 0.3
   UaMinMax: 0.0872
   UrMinMax: 0.0872
-  UiVal: 650
-  UiDeltaVal: 1
-  UtVal: 125
+  UiVal: 500
+  UiDeltaVal: 25
+  UtVal: 0.6
 --- !u!114 &1388710418429386915
 MonoBehaviour:
   m_ObjectHideFlags: 0

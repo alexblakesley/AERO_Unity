@@ -128,19 +128,24 @@ public class HybridDynamicsMarta
         U4 = _U4;
 
         if (U == 0 && V == 0 && W == 0){
-            U = 0.0000001;
+            U = 0.00000000000000001;
         }
         
         double U_res = U - Uw;
-        double V_res = V - Vw;
-        double W_res = W - Ww;
+        double V_res = Math.Round(V - Vw, 4);
+        double W_res = Math.Round(W - Ww, 4);
 
         Va = Math.Sqrt(Math.Pow(U_res, 2) + Math.Pow(V_res, 2) + Math.Pow(W_res, 2));
 
-        alpha = Math.Atan(W_res / U_res);
+        alpha = Math.Atan(W_res / U_res) * sigmoid(U_res);
         beta = Math.Asin(V_res / Va);
 
         DragTerms = 0.5 * rho * Math.Pow(Va, 2) * S;
+    }
+
+    public double sigmoid(double term, double widthFactor = 10)
+    {
+        return 2 / (1 + Math.Exp(-widthFactor * term)) - 1;
     }
 
     public double[] GetDerivatives()

@@ -64,7 +64,7 @@ public class HybridController : MonoBehaviour
         Ua = 0.0f;
         Ue = 0.0f;
         Ur = 0.0f;
-        URotorBase = UiVal;
+        URotorBase = 350.175f; // Hover speed
 
         position = new Vector3(0, 0, 0);
         go.transform.position = position;

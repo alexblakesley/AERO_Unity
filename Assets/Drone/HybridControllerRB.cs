@@ -29,16 +29,6 @@ public class HybridControllerRB : MonoBehaviour
     public float U3;
     [ReadOnly]
     public float U4;
-    [ReadOnly]
-    public Vector3 position;
-    [ReadOnly]
-    public Vector3 velocity;
-    [ReadOnly]
-    public Vector3 eulerAngles;
-    [ReadOnly]
-    public Quaternion rotation;
-    [ReadOnly]
-    public Vector3 angularVelocity;
 
     
     public float UeMinMax;
@@ -67,16 +57,13 @@ public class HybridControllerRB : MonoBehaviour
         Ur = 0.0f;
         URotorBase = 0.0f;
 
-        position = new Vector3(0, 0, 0);
-        go.transform.position = position;
+        go.transform.position = new Vector3(0, 0, 0);
 
-        velocity = new Vector3(0, 0, 0);
-        rb.velocity = velocity;
+        rb.velocity = new Vector3(0, 0, 0);
 
-        eulerAngles = new Vector3(0, 0, 0);
-        go.transform.eulerAngles = eulerAngles;
+        go.transform.eulerAngles = new Vector3(0, 0, 0);
 
-        angularVelocity = new Vector3(0, 0, 0);
+        rb.angularVelocity = new Vector3(0, 0, 0);
     }
 
     private void FixedUpdate()
@@ -108,18 +95,18 @@ public class HybridControllerRB : MonoBehaviour
         }
 
         // Setup state variables from internal state
-        float x =       position.x;
-        float y =       position.y;
-        float z =       position.z;
-        float u =       velocity.x;
-        float v =       velocity.y;
-        float w =       velocity.z;
-        float phi =     eulerAngles.x     * Mathf.Deg2Rad;
-        float theta =   eulerAngles.y     * Mathf.Deg2Rad;
-        float psi =     eulerAngles.z     * Mathf.Deg2Rad;
-        float p =       angularVelocity.x * Mathf.Deg2Rad;
-        float q =       angularVelocity.y * Mathf.Deg2Rad;
-        float r =       angularVelocity.z * Mathf.Deg2Rad;
+        float x =       rb.position.x;
+        float y =       rb.position.y;
+        float z =       rb.position.z;
+        float u =       rb.velocity.x;
+        float v =       rb.velocity.y;
+        float w =       rb.velocity.z;
+        float phi =     rb.transform.eulerAngles.x     * Mathf.Deg2Rad;
+        float theta =   rb.transform.eulerAngles.y     * Mathf.Deg2Rad;
+        float psi =     rb.transform.eulerAngles.z     * Mathf.Deg2Rad;
+        float p =       rb.angularVelocity.x * Mathf.Deg2Rad;
+        float q =       rb.angularVelocity.y * Mathf.Deg2Rad;
+        float r =       rb.angularVelocity.z * Mathf.Deg2Rad;
                 
         HybridDynamicsMarta dynamics = new(x, y, z, u, v, w, phi, theta, psi, p, q, r, Ua, Ue, Ur, Ut, U1, U2, U3, U4);
 
@@ -138,12 +125,6 @@ public class HybridControllerRB : MonoBehaviour
         float dp =      (float) derivatives[9]  * Time.fixedDeltaTime * Mathf.Rad2Deg;
         float dq =      (float) derivatives[10] * Time.fixedDeltaTime * Mathf.Rad2Deg;
         float dr =      (float) derivatives[11] * Time.fixedDeltaTime * Mathf.Rad2Deg;
-        
-        // Update internal state
-        position += new Vector3(dx, dy, dz);
-        velocity += new Vector3(du, dv, dw);
-        eulerAngles += new Vector3(dphi, dtheta, dpsi);
-        angularVelocity += new Vector3(dp, dq, dr);
 
         // rb.velocity = new Vector3(dx, dz, dy);
         rb.AddForce(new Vector3(du, dw, dv), ForceMode.VelocityChange);
