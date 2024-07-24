@@ -48,8 +48,12 @@ public class HybridDynamicsMarta
     public double Iz = 1.759; // Inertia in Z (kg m^2)
     public double Ixz = 0.12; // Inertia in X - Z (kg m^2)
 
-    public double Cd_rotor = 2.20 * Math.Pow(10, -4); // drag coefficient (𝑁/𝑠^2)
-    public double Ct_rotor = 5.58 * Math.Pow(10, -6); // torque coefficient (𝑁m/𝑠^2)
+    public double S_prop = 0.2027; // propellor area (m^2)
+    public double C_prop = 1; // propellor efficiency
+    public double k_motor = 80; // motor efficiency
+    public double n_eff = Math.PI / 4; // motor efficiency
+    public double CT_q = 2.20 * Math.Pow(10, -4); // drag coefficient (𝑁/𝑠^2)
+    public double CM_q = 5.58 * Math.Pow(10, -6); // torque coefficient (𝑁m/𝑠^2)
 
     public double omega_max = 736.81; // (rad/s)
     public double thrust_max = 125; // (N)
@@ -58,10 +62,10 @@ public class HybridDynamicsMarta
     // Longitudinal Aerodynamic coefficients (no unit)
     public double CL_0 = 0.23;
     public double CD_0 = 0.043;
-    public double Cm_0 = 0.0135;
+    public double Cm_0 = 00;
     public double CL_alpha = 5.61;
     public double CD_alpha = 0.030;
-    public double Cm_alpha = -2.74;
+    public double Cm_alpha = 0;
     public double CL_q = 7.95;
     public double CD_q = 0;
     public double Cm_q = -38.21;
@@ -131,7 +135,7 @@ public class HybridDynamicsMarta
         double V_res = V - Vw;
         double W_res = W - Ww;
 
-        Va = Math.Sqrt(Math.Abs(U_res) * U_res + Math.Abs(V_res) * V_res + Math.Abs(W_res) * W_res);
+        Va = Math.Sqrt(Math.Pow(U_res, 2) + Math.Pow(V_res, 2) + Math.Pow(W_res, 2));
 
         alpha = Math.Atan(W_res / U_res);
         beta = Math.Asin(V_res / Va);
@@ -212,15 +216,14 @@ public class HybridDynamicsMarta
         double Fb_a_z = Math.Sin(alpha) * - Fs_drag    +   Math.Cos(alpha) * - Fs_lift;
         
         // Engine 
-        double F_eng = Ut;
-        double Fb_eng_x = F_eng;
+        double Fb_eng_x = 0.5 * rho * S_prop * C_prop * (Math.Pow(k_motor * Ut, 2) - Math.Pow(U, 2));
         double Fb_eng_y = 0;
         double Fb_eng_z = 0;
         
         // Motors
         double Fb_mtr_x = 0;
         double Fb_mtr_y = 0;
-        double Fb_mtr_z = -Cd_rotor * (Math.Pow(U1, 2) + Math.Pow(U2, 2) + Math.Pow(U3, 2) + Math.Pow(U4, 2));
+        double Fb_mtr_z = - CT_q * (Math.Pow(U1, 2) + Math.Pow(U2, 2) + Math.Pow(U3, 2) + Math.Pow(U4, 2));
 
         // Sum
         double Fx = Fb_g_x + Fb_a_x + Fb_eng_x + Fb_mtr_x;
@@ -250,19 +253,19 @@ public class HybridDynamicsMarta
     private double[] getAngularVelocityDerivatives()
     {   
         // Aero
-        double Mb_a_x = DragTerms * b * (Cl_0 + Cl_beta * beta + Cl_p * b / (2 * Va) * P + Cl_r * b / (2 * Va) * R + Cl_Ua * Ua + Cl_Ur * Ur);
-        double Mb_a_y = DragTerms * c * (Cm_0 + Cm_alpha * alpha + Cm_q * c / (2 * Va) * Q + Cm_Ue * Ue);
-        double Mb_a_z = DragTerms * b * (Cn_0 + Cn_beta * beta + Cn_p * b / (2 * Va) * P + Cn_r * b / (2 * Va) * R + Cn_Ua * Ua + Cn_Ur * Ur);
+        double Mb_a_phi = DragTerms * b * (Cl_0 + Cl_beta * beta + Cl_p * b / (2 * Va) * P + Cl_r * b / (2 * Va) * R + Cl_Ua * Ua + Cl_Ur * Ur);
+        double Mb_a_theta = DragTerms * c * (Cm_0 + Cm_alpha * alpha + Cm_q * c / (2 * Va) * Q + Cm_Ue * Ue);
+        double Mb_a_psi = DragTerms * b * (Cn_0 + Cn_beta * beta + Cn_p * b / (2 * Va) * P + Cn_r * b / (2 * Va) * R + Cn_Ua * Ua + Cn_Ur * Ur);
         
         // Motors
-        double Mb_mtr_x = Cd_rotor * l1 * (Math.Pow(U1, 2) + Math.Pow(U4, 2) - Math.Pow(U2, 2) - Math.Pow(U3, 2));
-        double Mb_mtr_y = Cd_rotor * l2 * (Math.Pow(U1, 2) + Math.Pow(U2, 2) - Math.Pow(U3, 2) - Math.Pow(U4, 2));
-        double Mb_mtr_z = Ct_rotor * (Math.Pow(U1, 2) + Math.Pow(U3, 2) - Math.Pow(U2, 2) - Math.Pow(U4, 2));
+        double Mb_mtr_phi = CT_q * Math.Cos(n_eff) * (Math.Pow(U1, 2) - Math.Pow(U2, 2) - Math.Pow(U3, 2) + Math.Pow(U4, 2));
+        double Mb_mtr_theta = CT_q * Math.Sin(n_eff) * (Math.Pow(U1, 2) + Math.Pow(U2, 2) - Math.Pow(U3, 2) - Math.Pow(U4, 2));
+        double Mb_mtr_psi = CM_q                   * (Math.Pow(U1, 2) - Math.Pow(U2, 2) + Math.Pow(U3, 2) - Math.Pow(U4, 2));
 
         double[][] M = new double[3][];
-        M[0] = new double[] { Mb_a_x + Mb_mtr_x };
-        M[1] = new double[] { Mb_a_y + Mb_mtr_y };
-        M[2] = new double[] { Mb_a_z + Mb_mtr_z };
+        M[0] = new double[] { Mb_a_phi + Mb_mtr_phi };
+        M[1] = new double[] { Mb_a_theta + Mb_mtr_theta };
+        M[2] = new double[] { Mb_a_psi + Mb_mtr_psi };
 
         double[][] PQR = new double[3][];
         PQR[0] = new double[] { P };
