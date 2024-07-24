@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class HybridController : MonoBehaviour
@@ -60,7 +60,7 @@ public class HybridController : MonoBehaviour
     private void Start()
     {
         // Setup initial condition
-        Ut = 0.0f;
+        Ut = 0.000001f;
         Ua = 0.0f;
         Ue = 0.0f;
         Ur = 0.0f;

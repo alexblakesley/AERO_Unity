@@ -72,7 +72,6 @@ public class HybridDynamicsMarta
     public double CL_Ue = 0.13;
     public double CD_Ue = 0.0135;
     public double Cm_Ue = -0.99;
-    public double M = 50;
     public double alpha0 = 0.47;
     public double CD_p = 0.043;
 
@@ -144,7 +143,7 @@ public class HybridDynamicsMarta
     }
 
     public double sigmoid(double term, double widthFactor = 10)
-    {
+    {   
         return 2 / (1 + Math.Exp(-widthFactor * term)) - 1;
     }
 
@@ -208,16 +207,17 @@ public class HybridDynamicsMarta
     private double[] getVelocityDerivatives()
     {
         // Gravity
-        double Fb_g_x = - m * g * Math.Sin(Theta);
-        double Fb_g_y =   m * g * Math.Cos(Theta) * Math.Sin(Phi);
-        double Fb_g_z =   m * g * Math.Cos(Theta) * Math.Cos(Phi);
+        double grav = m * g * sigmoid(-Z, 10);
+        double Fb_g_x = - grav * Math.Sin(Theta);
+        double Fb_g_y =   grav * Math.Cos(Theta) * Math.Sin(Phi);
+        double Fb_g_z =   grav * Math.Cos(Theta) * Math.Cos(Phi);
 
         // Aero
-        double Fs_drag = DragTerms * (CD_0 + CD_alpha * alpha + CD_q * c / (2 * Va) * Q + CD_Ue * Ue);
-        double Fs_lift = DragTerms * (CL_0 + CL_alpha * alpha + CL_q * c / (2 * Va) * Q + CL_Ue * Ue);
+        double Fs_drag = DragTerms * ((CD_0 + CD_alpha) * alpha + CD_q * c / (2 * U) * Q + CD_Ue * Ue);
+        double Fs_lift = DragTerms * ((CL_0 + CL_alpha) * alpha + CL_q * c / (2 * U) * Q + CL_Ue * Ue);
 
         double Fb_a_x = Math.Cos(alpha) * - Fs_drag    + - Math.Sin(alpha) * - Fs_lift;
-        double Fb_a_y = DragTerms * b * (CY_0 + CY_beta * beta + CY_p * b / (2 * Va) * P  + CY_r * b / (2 * Va) * R + CY_Ua * Ua + CY_Ur * Ur);
+        double Fb_a_y = DragTerms * b * (CY_0 + CY_beta * beta + CY_p * b / (2 * U) * P  + CY_r * b / (2 * U) * R + CY_Ua * Ua + CY_Ur * Ur);
         double Fb_a_z = Math.Sin(alpha) * - Fs_drag    +   Math.Cos(alpha) * - Fs_lift;
         
         // Engine 
@@ -258,9 +258,9 @@ public class HybridDynamicsMarta
     private double[] getAngularVelocityDerivatives()
     {   
         // Aero
-        double Mb_a_phi = DragTerms * b * (Cl_0 + Cl_beta * beta + Cl_p * b / (2 * Va) * P + Cl_r * b / (2 * Va) * R + Cl_Ua * Ua + Cl_Ur * Ur);
-        double Mb_a_theta = DragTerms * c * (Cm_0 + Cm_alpha * alpha + Cm_q * c / (2 * Va) * Q + Cm_Ue * Ue);
-        double Mb_a_psi = DragTerms * b * (Cn_0 + Cn_beta * beta + Cn_p * b / (2 * Va) * P + Cn_r * b / (2 * Va) * R + Cn_Ua * Ua + Cn_Ur * Ur);
+        double Mb_a_phi = DragTerms * b * (Cl_0 + Cl_beta * beta + Cl_p * b / (2 * U) * P + Cl_r * b / (2 * U) * R + Cl_Ua * Ua + Cl_Ur * Ur);
+        double Mb_a_theta = DragTerms * c * (Cm_0 + Cm_alpha * alpha + Cm_q * c / (2 * U) * Q + Cm_Ue * Ue);
+        double Mb_a_psi = DragTerms * b * (Cn_0 + Cn_beta * beta + Cn_p * b / (2 * U) * P + Cn_r * b / (2 * U) * R + Cn_Ua * Ua + Cn_Ur * Ur);
         
         // Motors
         double Mb_mtr_phi = CT_q * Math.Cos(n_eff) * (Math.Pow(U1, 2) - Math.Pow(U2, 2) - Math.Pow(U3, 2) + Math.Pow(U4, 2));
