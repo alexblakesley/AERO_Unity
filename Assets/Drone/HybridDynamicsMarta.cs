@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class HybridDynamicsMarta
 {
@@ -22,12 +23,21 @@ public class HybridDynamicsMarta
     public double U2 { get; set; }
     public double U3 { get; set; }
     public double U4 { get; set; }
+    public double alpha { get; set; }
+    public double beta { get; set; }
+    public double Va { get; set; }
+    public double DragTerms { get; set; }
+
+    // Wind Vector
+    double Uw = 0;
+    double Vw = 0;
+    double Ww = 0;
 
     // Parameters
     public double g = 9.81;
     public double rho = 1.225;
     public double m = 11; // Mass (kg)
-    public double ws = 2.9; // Wing Span (m)
+    public double b = 2.9; // Wing Span (m)
     public double t = 1; // Tail Offset (m)
     public double c = 0.19; // Wing Chord (m)
     public double S = 0.55; // Wing Area (m^2)
@@ -38,14 +48,50 @@ public class HybridDynamicsMarta
     public double Iz = 1.759; // Inertia in Z (kg m^2)
     public double Ixz = 0.12; // Inertia in X - Z (kg m^2)
 
-    public double Cd = 0.08; // dimensionless drag coefficient in xyz axis.
-
-    public double b = 2.20 * Math.Pow(10, -4); // drag coefficient (𝑁/𝑠^2)
-    public double d = 5.58 * Math.Pow(10, -6); // torque coefficient (𝑁m/𝑠^2)
+    public double Cd_rotor = 2.20 * Math.Pow(10, -4); // drag coefficient (𝑁/𝑠^2)
+    public double Ct_rotor = 5.58 * Math.Pow(10, -6); // torque coefficient (𝑁m/𝑠^2)
 
     public double omega_max = 736.81; // (rad/s)
     public double thrust_max = 125; // (N)
     public double torque_max = 3.26; // (Nm)
+
+    // Longitudinal Aerodynamic coefficients (no unit)
+    public double CL_0 = 0.23;
+    public double CD_0 = 0.043;
+    public double Cm_0 = 0.0135;
+    public double CL_alpha = 5.61;
+    public double CD_alpha = 0.030;
+    public double Cm_alpha = -2.74;
+    public double CL_q = 7.95;
+    public double CD_q = 0;
+    public double Cm_q = -38.21;
+    public double CL_Ue = 0.13;
+    public double CD_Ue = 0.0135;
+    public double Cm_Ue = -0.99;
+    public double M = 50;
+    public double alpha0 = 0.47;
+    public double CD_p = 0.043;
+
+
+    // Lateral Aerodynamic coefficients (no unit)
+    public double CY_0 = 0;
+    public double Cl_0 = 0;
+    public double Cn_0 = 0;
+    public double CY_beta = -0.83;
+    public double Cl_beta = -0.13;
+    public double Cn_beta = 0.073;
+    public double CY_p = 0;
+    public double Cl_p = -0.51;
+    public double Cn_p = -0.069;
+    public double CY_r = 0;
+    public double Cl_r = 0.25;
+    public double Cn_r = -0.095;
+    public double CY_Ua = 0.075;
+    public double Cl_Ua = 0.17;
+    public double Cn_Ua = -0.011;
+    public double CY_Ur = 0.19;
+    public double Cl_Ur = 0.0024;
+    public double Cn_Ur = -0.069;
 
 
     public HybridDynamicsMarta(
@@ -76,6 +122,21 @@ public class HybridDynamicsMarta
         U2 = _U2;
         U3 = _U3;
         U4 = _U4;
+
+        if (U == 0 && V == 0 && W == 0){
+            U = 0.0000001;
+        }
+        
+        double U_res = U - Uw;
+        double V_res = V - Vw;
+        double W_res = W - Ww;
+
+        Va = Math.Sqrt(Math.Abs(U_res) * U_res + Math.Abs(V_res) * V_res + Math.Abs(W_res) * W_res);
+
+        alpha = Math.Atan(W_res / U_res);
+        beta = Math.Asin(V_res / Va);
+
+        DragTerms = 0.5 * rho * Math.Pow(Va, 2) * S;
     }
 
     public double[] GetDerivatives()
@@ -137,23 +198,31 @@ public class HybridDynamicsMarta
 
     private double[] getVelocityDerivatives()
     {
+        // Gravity
         double Fb_g_x = - m * g * Math.Sin(Theta);
         double Fb_g_y =   m * g * Math.Cos(Theta) * Math.Sin(Phi);
         double Fb_g_z =   m * g * Math.Cos(Theta) * Math.Cos(Phi);
 
-        double Fb_a_x = - 0.5 * rho * U * Math.Abs(U) * S * Cd; // (Cd + Math.Sin(Ue) + Math.Sin(Ua) + Math.Sin(Ur));
-        double Fb_a_y = - 0.5 * rho * V * Math.Abs(V) * S * Cd;
-        double Fb_a_z = - 0.5 * rho * W * Math.Abs(W) * S * Cd;
+        // Aero
+        double Fs_drag = DragTerms * (CD_0 + CD_alpha * alpha + CD_q * c / (2 * Va) * Q + CD_Ue * Ue);
+        double Fs_lift = DragTerms * (CL_0 + CL_alpha * alpha + CL_q * c / (2 * Va) * Q + CL_Ue * Ue);
+
+        double Fb_a_x = Math.Cos(alpha) * - Fs_drag    + - Math.Sin(alpha) * - Fs_lift;
+        double Fb_a_y = DragTerms * b * (CY_0 + CY_beta * beta + CY_p * b / (2 * Va) * P  + CY_r * b / (2 * Va) * R + CY_Ua * Ua + CY_Ur * Ur);
+        double Fb_a_z = Math.Sin(alpha) * - Fs_drag    +   Math.Cos(alpha) * - Fs_lift;
         
+        // Engine 
         double F_eng = Ut;
         double Fb_eng_x = F_eng;
         double Fb_eng_y = 0;
         double Fb_eng_z = 0;
         
+        // Motors
         double Fb_mtr_x = 0;
         double Fb_mtr_y = 0;
-        double Fb_mtr_z = -b * (Math.Pow(U1, 2) + Math.Pow(U2, 2) + Math.Pow(U3, 2) + Math.Pow(U4, 2));
+        double Fb_mtr_z = -Cd_rotor * (Math.Pow(U1, 2) + Math.Pow(U2, 2) + Math.Pow(U3, 2) + Math.Pow(U4, 2));
 
+        // Sum
         double Fx = Fb_g_x + Fb_a_x + Fb_eng_x + Fb_mtr_x;
         double Fy = Fb_g_y + Fb_a_y + Fb_eng_y + Fb_mtr_y;
         double Fz = Fb_g_z + Fb_a_z + Fb_eng_z + Fb_mtr_z;
@@ -179,14 +248,16 @@ public class HybridDynamicsMarta
     }
 
     private double[] getAngularVelocityDerivatives()
-    {
-        double Mb_a_x = rho * Math.Pow(U, 2) * S * Math.Sin(Ua) * ws;
-        double Mb_a_y = rho * Math.Pow(V, 2) * S * Math.Sin(Ue) * t;
-        double Mb_a_z = rho * Math.Pow(W, 2) * S * Math.Sin(Ur) * t;
+    {   
+        // Aero
+        double Mb_a_x = DragTerms * b * (Cl_0 + Cl_beta * beta + Cl_p * b / (2 * Va) * P + Cl_r * b / (2 * Va) * R + Cl_Ua * Ua + Cl_Ur * Ur);
+        double Mb_a_y = DragTerms * c * (Cm_0 + Cm_alpha * alpha + Cm_q * c / (2 * Va) * Q + Cm_Ue * Ue);
+        double Mb_a_z = DragTerms * b * (Cn_0 + Cn_beta * beta + Cn_p * b / (2 * Va) * P + Cn_r * b / (2 * Va) * R + Cn_Ua * Ua + Cn_Ur * Ur);
         
-        double Mb_mtr_x = b * l1 * (Math.Pow(U1, 2) + Math.Pow(U4, 2) - Math.Pow(U2, 2) - Math.Pow(U3, 2));
-        double Mb_mtr_y = b * l2 * (Math.Pow(U1, 2) + Math.Pow(U2, 2) - Math.Pow(U3, 2) - Math.Pow(U4, 2));
-        double Mb_mtr_z = d * (Math.Pow(U1, 2) + Math.Pow(U3, 2) - Math.Pow(U2, 2) - Math.Pow(U4, 2));
+        // Motors
+        double Mb_mtr_x = Cd_rotor * l1 * (Math.Pow(U1, 2) + Math.Pow(U4, 2) - Math.Pow(U2, 2) - Math.Pow(U3, 2));
+        double Mb_mtr_y = Cd_rotor * l2 * (Math.Pow(U1, 2) + Math.Pow(U2, 2) - Math.Pow(U3, 2) - Math.Pow(U4, 2));
+        double Mb_mtr_z = Ct_rotor * (Math.Pow(U1, 2) + Math.Pow(U3, 2) - Math.Pow(U2, 2) - Math.Pow(U4, 2));
 
         double[][] M = new double[3][];
         M[0] = new double[] { Mb_a_x + Mb_mtr_x };

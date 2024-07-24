@@ -63,14 +63,14 @@ public class HybridControllerRB : MonoBehaviour
         // Setup initial condition
         Ut = 0.0f;
         Ua = 0.0f;
-        Ue = 0.2f;
+        Ue = 0.0f;
         Ur = 0.0f;
         URotorBase = 0.0f;
 
         position = new Vector3(0, 0, 0);
         go.transform.position = position;
 
-        velocity = new Vector3(60, 0, 0);
+        velocity = new Vector3(0, 0, 0);
         rb.velocity = velocity;
 
         eulerAngles = new Vector3(0, 0, 0);
@@ -149,7 +149,7 @@ public class HybridControllerRB : MonoBehaviour
         rb.AddForce(new Vector3(du, dw, dv), ForceMode.VelocityChange);
 
         // rb.angularVelocity = new Vector3(-dphi, dpsi, dtheta);
-        rb.AddTorque(new Vector3(-dp, dr, dq), ForceMode.VelocityChange);
+        rb.AddTorque(new Vector3(dp, dr, dq), ForceMode.VelocityChange);
 
         // Update Camera Pos
         Camera.transform.position = new Vector3(go.transform.position.x - 1.83f, go.transform.position.y + 0.64f, go.transform.position.z);

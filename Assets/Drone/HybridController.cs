@@ -62,7 +62,7 @@ public class HybridController : MonoBehaviour
         // Setup initial condition
         Ut = 0.0f;
         Ua = 0.0f;
-        Ue = 0.0f;
+        Ue = 0.02f;
         Ur = 0.0f;
         U1 = 0.0f;
         U2 = 0.0f;
@@ -72,7 +72,7 @@ public class HybridController : MonoBehaviour
         position = new Vector3(0, 0, 0);
         go.transform.position = position;
 
-        velocity = new Vector3(0, 0, 0);
+        velocity = new Vector3(45, 0, 0);
 
         eulerAngles = new Vector3(0, 0, 0);
         go.transform.eulerAngles = eulerAngles;

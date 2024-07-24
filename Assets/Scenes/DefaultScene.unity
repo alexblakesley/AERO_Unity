@@ -431,6 +431,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HybridRB
       objectReference: {fileID: 0}
+    - target: {fileID: 1388710418429386911, guid: 190b6cebfdaff4f4ca3fe02b5efcb172,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1388710418429386913, guid: 190b6cebfdaff4f4ca3fe02b5efcb172,
         type: 3}
       propertyPath: m_LocalPosition.x
