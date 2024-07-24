@@ -499,7 +499,7 @@ PrefabInstance:
     - target: {fileID: 8930104168839181283, guid: 190b6cebfdaff4f4ca3fe02b5efcb172,
         type: 3}
       propertyPath: UiDeltaVal
-      value: 0.001
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

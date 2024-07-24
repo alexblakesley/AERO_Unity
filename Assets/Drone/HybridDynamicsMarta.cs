@@ -25,18 +25,18 @@ public class HybridDynamicsMarta
 
     // Parameters
     public double g = 9.81;
-    public double m = 21.5;
     public double rho = 1.225;
-    public double ws = 3.3; // Wing Span (m)
+    public double m = 11; // Mass (kg)
+    public double ws = 2.9; // Wing Span (m)
     public double t = 1; // Tail Offset (m)
-    public double c = 0.2; // Wing Chord (m)
-    public double S = 0.784; // Wing Area (m^2)
+    public double c = 0.19; // Wing Chord (m)
+    public double S = 0.55; // Wing Area (m^2)
     public double l1 = 0.4; // CoG to motor offset in x (m)
     public double l2 = 0.4; // CoG to motor offset in y (m)
-    public double Ix = 0.08; // Inertia in X
-    public double Iy = 0.05; // Inertia in Y
-    public double Iz = 0.12; // Inertia in Z
-    public double Ixz = 0; // Inertia in X - Z 
+    public double Ix = 0.824; // Inertia in X (kg m^2)
+    public double Iy = 1.135; // Inertia in Y (kg m^2)
+    public double Iz = 1.759; // Inertia in Z (kg m^2)
+    public double Ixz = 0.12; // Inertia in X - Z (kg m^2)
 
     public double Cd = 0.08; // dimensionless drag coefficient in xyz axis.
 
@@ -158,9 +158,9 @@ public class HybridDynamicsMarta
         double Fy = Fb_g_y + Fb_a_y + Fb_eng_y + Fb_mtr_y;
         double Fz = Fb_g_z + Fb_a_z + Fb_eng_z + Fb_mtr_z;
 
-        double dU = Fx / m - P * U;
-        double dV = Fy / m - Q * V;
-        double dW = Fz / m - R * W;
+        double dU = Fx / m + (R * V - Q * W);
+        double dV = Fy / m + (P * W - R * U);
+        double dW = Fz / m + (Q * U - P * V);
 
         double[] ret = {dU, dV, dW};
 
@@ -169,9 +169,9 @@ public class HybridDynamicsMarta
 
     private double[] getRotationDerivatives()
     {
-        double dPhi = P + (R * Math.Cos(Phi) + Q * Math.Sin(Phi)) * Math.Tan(Theta);
-        double dTheta = Q * Math.Cos(Phi) - R * Math.Sin(Phi);
-        double dPsi = (Q * Math.Sin(Phi) + R * Math.Cos(Phi)) * (1 / Math.Cos(Theta));
+        double dPhi =    P + (Q * Math.Sin(Phi) + R * Math.Cos(Phi)) * Math.Tan(Theta);
+        double dTheta =       Q * Math.Cos(Phi) - R * Math.Sin(Phi);
+        double dPsi =        (Q * Math.Sin(Phi) + R * Math.Cos(Phi)) * (1 / Math.Cos(Theta));
         
         double[] ret = {dPhi, dTheta, dPsi};
 

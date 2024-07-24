@@ -63,14 +63,15 @@ public class HybridControllerRB : MonoBehaviour
         // Setup initial condition
         Ut = 0.0f;
         Ua = 0.0f;
-        Ue = 0.0f;
+        Ue = 0.2f;
         Ur = 0.0f;
         URotorBase = 0.0f;
 
         position = new Vector3(0, 0, 0);
         go.transform.position = position;
 
-        velocity = new Vector3(0, 0, 0);
+        velocity = new Vector3(60, 0, 0);
+        rb.velocity = velocity;
 
         eulerAngles = new Vector3(0, 0, 0);
         go.transform.eulerAngles = eulerAngles;
